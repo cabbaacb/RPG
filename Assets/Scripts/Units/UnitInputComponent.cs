@@ -1,21 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace RPG.Units
 {
     public class UnitInputComponent : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        protected Vector3 _movement;
 
-        }
+        public ref Vector3 MoveDirection() => ref _movement;
+        public EventHandler OnAttackEvent;
 
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
+        protected void CallOnAttackEvent() => OnAttackEvent?.Invoke(null, null);
+        
     }
 }

@@ -292,8 +292,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: -0.3002966, y: 0.31708372, z: -0.10659442, w: -0.8932623}
+  m_LocalPosition: {x: 5.124521, y: 5.7940464, z: -0.87876683}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2454,6 +2454,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2607066350398564866}
   - component: {fileID: 2607066350408402334}
+  - component: {fileID: 2607066350398928867}
+  - component: {fileID: 2607066350398928870}
+  - component: {fileID: 2607066350398928869}
   m_Layer: 0
   m_Name: HumanMeleeWarrior
   m_TagString: Untagged
@@ -2461,6 +2464,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2607066350398928867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2607066350398928866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f8a4bd8f1f3b3249a21e4372eb54194, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2607066350398928868
 GameObject:
   m_ObjectHideFlags: 0
@@ -2477,6 +2492,31 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2607066350398928869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2607066350398928866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2007ebf05df89da4286e61338505e61d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 3
+--- !u!114 &2607066350398928870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2607066350398928866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61c698165dcd1494f8d8388fe6992b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2607066350398928894
 GameObject:
   m_ObjectHideFlags: 0
