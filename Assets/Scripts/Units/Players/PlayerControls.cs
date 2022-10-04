@@ -156,6 +156,34 @@ namespace RPG.Units.Player
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Camera"",
+            ""id"": ""61e0951e-9d8d-4221-8fb9-7b15bd1de911"",
+            ""actions"": [
+                {
+                    ""name"": ""Delta"",
+                    ""type"": ""Value"",
+                    ""id"": ""9a24412b-0d61-4c6e-9633-2af997c7be7e"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a1e1a09e-4d27-487b-85e6-54e6f9f789e3"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Delta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -166,6 +194,9 @@ namespace RPG.Units.Player
             m_Unit_Horizontal = m_Unit.FindAction("Horizontal", throwIfNotFound: true);
             m_Unit_SwordAttack = m_Unit.FindAction("SwordAttack", throwIfNotFound: true);
             m_Unit_ShieldAttack = m_Unit.FindAction("ShieldAttack", throwIfNotFound: true);
+            // Camera
+            m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
+            m_Camera_Delta = m_Camera.FindAction("Delta", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -278,12 +309,49 @@ namespace RPG.Units.Player
             }
         }
         public UnitActions @Unit => new UnitActions(this);
+
+        // Camera
+        private readonly InputActionMap m_Camera;
+        private ICameraActions m_CameraActionsCallbackInterface;
+        private readonly InputAction m_Camera_Delta;
+        public struct CameraActions
+        {
+            private @PlayerControls m_Wrapper;
+            public CameraActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Delta => m_Wrapper.m_Camera_Delta;
+            public InputActionMap Get() { return m_Wrapper.m_Camera; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(CameraActions set) { return set.Get(); }
+            public void SetCallbacks(ICameraActions instance)
+            {
+                if (m_Wrapper.m_CameraActionsCallbackInterface != null)
+                {
+                    @Delta.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnDelta;
+                    @Delta.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnDelta;
+                    @Delta.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnDelta;
+                }
+                m_Wrapper.m_CameraActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @Delta.started += instance.OnDelta;
+                    @Delta.performed += instance.OnDelta;
+                    @Delta.canceled += instance.OnDelta;
+                }
+            }
+        }
+        public CameraActions @Camera => new CameraActions(this);
         public interface IUnitActions
         {
             void OnVertical(InputAction.CallbackContext context);
             void OnHorizontal(InputAction.CallbackContext context);
             void OnSwordAttack(InputAction.CallbackContext context);
             void OnShieldAttack(InputAction.CallbackContext context);
+        }
+        public interface ICameraActions
+        {
+            void OnDelta(InputAction.CallbackContext context);
         }
     }
 }
