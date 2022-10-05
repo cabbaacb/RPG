@@ -6,10 +6,18 @@ namespace RPG.Units
 {
     public class Unit : MonoBehaviour
     {
+        [SerializeField]
+        private Transform _targetPoint;
+
         private Animator _animator;
         private UnitInputComponent _inputs;
         private UnitStatsComponent _stats;
         private bool _inAnimation;
+
+        public SimpleHandle OnTargetLostHandler;
+        
+        public Unit Target { get; protected set; }
+        public Transform TargetPoint => _targetPoint;
 
         // Start is called before the first frame update
         void Start()
@@ -21,20 +29,52 @@ namespace RPG.Units
             if (_inputs == null) return;
 
             _inputs.OnAttackEvent += OnAttack;
+            _inputs.OnTargetEvent += OnTargetUpdate;
         }
 
         // Update is called once per frame
-        void Update()
+        protected virtual void Update()
         {
             OnMove();
         }
 
-        private void OnAttack(object sender, System.EventArgs args)
+        private void OnAttack()
         {
             if (_inAnimation) return;
 
             _animator.SetTrigger("SwordAttack");
             _inAnimation = true;
+        }
+
+        private void OnTargetUpdate()
+        {          
+
+            if(Target != null)
+            {
+                Target = null;
+                OnTargetLostHandler?.Invoke(); //todo
+                return;
+            }
+
+            var distance = float.MaxValue;
+            UnitStatsComponent target = null;
+
+            var units = FindObjectsOfType<UnitStatsComponent>();
+            foreach(var unit in units)
+            {
+                if (unit.SideType == _stats.SideType) continue;
+
+                var currentDistance = (unit.transform.position - transform.position).sqrMagnitude;
+                if (currentDistance < distance)
+                {
+                    distance = currentDistance;
+                    target = unit;
+                }
+            }
+
+            if (target == null) Debug.LogError("No bots in scene");
+            Target = target.GetComponent<Unit>();
+
         }
 
         private void OnMove()
@@ -59,6 +99,15 @@ namespace RPG.Units
         private void OnAnimationEnd_UnityEvent(AnimationEvent data)
         {
             _inAnimation = false;
+        }
+
+
+
+
+        private void OnDisable()
+        {
+            _inputs.OnAttackEvent -= OnAttack;
+            _inputs.OnTargetEvent -= OnTargetUpdate;
         }
     }
 }

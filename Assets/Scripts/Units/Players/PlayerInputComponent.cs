@@ -20,11 +20,17 @@ namespace RPG.Units.Player
         {
             _controls = new PlayerControls();
             _controls.Unit.SwordAttack.performed += OnSwordAttack;
+            _controls.Unit.LockTarget.performed += OnTargetLock;
         }
 
         private void OnSwordAttack(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
             CallOnAttackEvent();
+        }
+
+        private void OnTargetLock(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        {
+            CallOnTargetEvent();
         }
 
         // Update is called once per frame
@@ -47,8 +53,9 @@ namespace RPG.Units.Player
         {
             _controls.Dispose();
             _controls.Unit.SwordAttack.performed -= OnSwordAttack;
+            _controls.Unit.LockTarget.performed -= OnTargetLock;
         }
-
+                
         private Vector3 SetMovement()
         {
             Vector3 direction = new Vector3();

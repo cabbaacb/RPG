@@ -9,5 +9,7 @@ namespace RPG.Units
     {
         [Range(0f, 10f)]
         public float MoveSpeed = 3f;
+
+        public SideType SideType;
     }
 }

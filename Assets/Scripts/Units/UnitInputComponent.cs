@@ -10,9 +10,11 @@ namespace RPG.Units
         protected Vector3 _movement;
 
         public ref Vector3 MoveDirection() => ref _movement;
-        public EventHandler OnAttackEvent;
+        public SimpleHandle OnAttackEvent;
+        public SimpleHandle OnTargetEvent;
 
-        protected void CallOnAttackEvent() => OnAttackEvent?.Invoke(null, null);
+        protected void CallOnAttackEvent() => OnAttackEvent?.Invoke();
+        protected void CallOnTargetEvent() => OnTargetEvent?.Invoke();
         
     }
 }

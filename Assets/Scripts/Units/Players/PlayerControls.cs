@@ -64,6 +64,15 @@ namespace RPG.Units.Player
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LockTarget"",
+                    ""type"": ""Button"",
+                    ""id"": ""3bd42b18-2237-467b-a03a-100aaccb1434"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -154,6 +163,17 @@ namespace RPG.Units.Player
                     ""action"": ""ShieldAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""78ca52f6-8392-4f42-bded-2b4811d3b3c3"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LockTarget"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -194,6 +214,7 @@ namespace RPG.Units.Player
             m_Unit_Horizontal = m_Unit.FindAction("Horizontal", throwIfNotFound: true);
             m_Unit_SwordAttack = m_Unit.FindAction("SwordAttack", throwIfNotFound: true);
             m_Unit_ShieldAttack = m_Unit.FindAction("ShieldAttack", throwIfNotFound: true);
+            m_Unit_LockTarget = m_Unit.FindAction("LockTarget", throwIfNotFound: true);
             // Camera
             m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
             m_Camera_Delta = m_Camera.FindAction("Delta", throwIfNotFound: true);
@@ -260,6 +281,7 @@ namespace RPG.Units.Player
         private readonly InputAction m_Unit_Horizontal;
         private readonly InputAction m_Unit_SwordAttack;
         private readonly InputAction m_Unit_ShieldAttack;
+        private readonly InputAction m_Unit_LockTarget;
         public struct UnitActions
         {
             private @PlayerControls m_Wrapper;
@@ -268,6 +290,7 @@ namespace RPG.Units.Player
             public InputAction @Horizontal => m_Wrapper.m_Unit_Horizontal;
             public InputAction @SwordAttack => m_Wrapper.m_Unit_SwordAttack;
             public InputAction @ShieldAttack => m_Wrapper.m_Unit_ShieldAttack;
+            public InputAction @LockTarget => m_Wrapper.m_Unit_LockTarget;
             public InputActionMap Get() { return m_Wrapper.m_Unit; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -289,6 +312,9 @@ namespace RPG.Units.Player
                     @ShieldAttack.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnShieldAttack;
                     @ShieldAttack.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnShieldAttack;
                     @ShieldAttack.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnShieldAttack;
+                    @LockTarget.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnLockTarget;
+                    @LockTarget.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnLockTarget;
+                    @LockTarget.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnLockTarget;
                 }
                 m_Wrapper.m_UnitActionsCallbackInterface = instance;
                 if (instance != null)
@@ -305,6 +331,9 @@ namespace RPG.Units.Player
                     @ShieldAttack.started += instance.OnShieldAttack;
                     @ShieldAttack.performed += instance.OnShieldAttack;
                     @ShieldAttack.canceled += instance.OnShieldAttack;
+                    @LockTarget.started += instance.OnLockTarget;
+                    @LockTarget.performed += instance.OnLockTarget;
+                    @LockTarget.canceled += instance.OnLockTarget;
                 }
             }
         }
@@ -348,6 +377,7 @@ namespace RPG.Units.Player
             void OnHorizontal(InputAction.CallbackContext context);
             void OnSwordAttack(InputAction.CallbackContext context);
             void OnShieldAttack(InputAction.CallbackContext context);
+            void OnLockTarget(InputAction.CallbackContext context);
         }
         public interface ICameraActions
         {
