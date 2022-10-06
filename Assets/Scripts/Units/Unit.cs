@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace RPG.Units
 {
@@ -13,6 +14,7 @@ namespace RPG.Units
         private UnitInputComponent _inputs;
         private UnitStatsComponent _stats;
         private bool _inAnimation;
+        private TriggerComponent[] _colliders;
 
         public SimpleHandle OnTargetLostHandler;
         
@@ -25,11 +27,14 @@ namespace RPG.Units
             _animator = GetComponentInChildren<Animator>();
             _inputs = GetComponent<UnitInputComponent>();
             _stats = GetComponent<UnitStatsComponent>();
+            _colliders = GetComponentsInChildren<TriggerComponent>();
+            foreach (var collider in _colliders)
+                collider.Construct(this, _stats);
+
 
             if (_inputs == null) return;
 
-            _inputs.OnAttackEvent += OnAttack;
-            _inputs.OnTargetEvent += OnTargetUpdate;
+            BindingEvents();
         }
 
         // Update is called once per frame
@@ -38,12 +43,37 @@ namespace RPG.Units
             OnMove();
         }
 
-        private void OnAttack()
+        protected virtual void BindingEvents(bool unbind = false)
+        {
+            if(unbind)
+            {
+                _inputs.OnAttackEvent -= OnSwordAttack;
+                _inputs.OnShieldEvent -= OnShieldAttack;
+                _inputs.OnTargetEvent -= OnTargetUpdate;
+                return;
+            }
+
+            _inputs.OnAttackEvent += OnSwordAttack;
+            _inputs.OnShieldEvent += OnShieldAttack;
+            _inputs.OnTargetEvent += OnTargetUpdate;
+        }
+
+        private void OnSwordAttack()
         {
             if (_inAnimation) return;
 
             _animator.SetTrigger("SwordAttack");
             _inAnimation = true;
+        }
+
+        private void OnShieldAttack()
+        {
+            if (_inAnimation || _stats.CurrentCalldown > 0f) return;
+
+            _animator.SetTrigger("ShieldAttack");
+            _inAnimation = true;
+
+            _stats.CurrentCalldown = _stats.CalldownShieldAttack;
         }
 
         private void OnTargetUpdate()
@@ -101,13 +131,26 @@ namespace RPG.Units
             _inAnimation = false;
         }
 
-
-
-
-        private void OnDisable()
+        private void OnCollider_UnityEvent(AnimationEvent data)
         {
-            _inputs.OnAttackEvent -= OnAttack;
-            _inputs.OnTargetEvent -= OnTargetUpdate;
+            var collider = _colliders.FirstOrDefault(t => t.GetID == data.intParameter);
+
+#if UNITY_EDITOR
+            if(collider == null)
+            {
+                Debug.LogError($"collider with ID {data.intParameter} not found!");
+                UnityEditor.EditorApplication.isPaused = true;
+            }
+#endif
+
+            collider.Enable = data.floatParameter == 1f;
+
+
+        }
+
+        private void OnDestroy()
+        {
+            BindingEvents(true);
         }
     }
 }

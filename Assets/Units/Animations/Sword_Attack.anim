@@ -96567,6 +96567,20 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
+  - time: 0.4
+    functionName: OnCollider_UnityEvent
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 1
+    intParameter: 113
+    messageOptions: 0
+  - time: 0.6333333
+    functionName: OnCollider_UnityEvent
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 113
+    messageOptions: 0
   - time: 1.4
     functionName: OnAnimationEnd_UnityEvent
     data: 

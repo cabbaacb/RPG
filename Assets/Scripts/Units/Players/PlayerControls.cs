@@ -156,7 +156,7 @@ namespace RPG.Units.Player
                 {
                     ""name"": """",
                     ""id"": ""8446ee3f-9a67-46ba-a76b-c68434440762"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

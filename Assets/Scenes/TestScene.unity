@@ -1419,6 +1419,8 @@ GameObject:
   - component: {fileID: 1240309063}
   - component: {fileID: 1240309062}
   - component: {fileID: 1240309061}
+  - component: {fileID: 1240309065}
+  - component: {fileID: 1240309066}
   m_Layer: 0
   m_Name: BasicMotionsDummyModel (1)
   m_TagString: Untagged
@@ -1452,7 +1454,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 3
+  Health: 10
   SideType: 2
+  CalldownShieldAttack: 0
+  CurrentCalldown: 0
 --- !u!95 &1240309063
 Animator:
   serializedVersion: 3
@@ -1488,6 +1493,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!136 &1240309065
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240309060}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.3
+  m_Height: 1.9
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.95, z: 0}
+--- !u!54 &1240309066
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240309060}
+  serializedVersion: 2
+  m_Mass: 100
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &1277494082
 GameObject:
   m_ObjectHideFlags: 0
@@ -2904,6 +2939,8 @@ GameObject:
   - component: {fileID: 2032519129}
   - component: {fileID: 2041918139}
   - component: {fileID: 2041918140}
+  - component: {fileID: 2041886114}
+  - component: {fileID: 2041886115}
   m_Layer: 0
   m_Name: BasicMotionsDummyModel
   m_TagString: Untagged
@@ -2911,6 +2948,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!136 &2041886114
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2041886113}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.3
+  m_Height: 1.9
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.95, z: 0}
+--- !u!54 &2041886115
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2041886113}
+  serializedVersion: 2
+  m_Mass: 100
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &2041886117
 GameObject:
   m_ObjectHideFlags: 0
@@ -3005,7 +3072,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 3
+  Health: 10
   SideType: 2
+  CalldownShieldAttack: 0
+  CurrentCalldown: 0
 --- !u!114 &2041918140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3203,6 +3273,8 @@ GameObject:
   - component: {fileID: 184403493361975486}
   - component: {fileID: 184403493360681118}
   - component: {fileID: 184403493359682142}
+  - component: {fileID: 184403493361622175}
+  - component: {fileID: 184403493361622176}
   m_Layer: 0
   m_Name: MeleeWarriorShield
   m_TagString: Untagged
@@ -3210,6 +3282,32 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &184403493361622175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184403493361622174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ee12f4ba89664540ab50c724a76a0c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 115
+--- !u!65 &184403493361622176
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184403493361622174}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.6598086, y: 0.88778424, z: 0.1528251}
+  m_Center: {x: 0.00005571016, y: 0.026371337, z: 0.07641271}
 --- !u!4 &184403493361975486
 Transform:
   m_ObjectHideFlags: 0
@@ -5643,6 +5741,8 @@ GameObject:
   - component: {fileID: 2607066350398928867}
   - component: {fileID: 2607066350398928870}
   - component: {fileID: 2607066350398928869}
+  - component: {fileID: 2607066350398928871}
+  - component: {fileID: 2607066350398928872}
   m_Layer: 0
   m_Name: HumanMeleeWarrior
   m_TagString: Untagged
@@ -5691,7 +5791,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 3
+  Health: 10
   SideType: 1
+  CalldownShieldAttack: 6
+  CurrentCalldown: 0
 --- !u!114 &2607066350398928870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5704,7 +5807,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61c698165dcd1494f8d8388fe6992b9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetPoint: {fileID: 0}
+  _targetPoint: {fileID: 2607066350398564924}
+--- !u!54 &2607066350398928871
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2607066350398928866}
+  serializedVersion: 2
+  m_Mass: 100
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
+--- !u!136 &2607066350398928872
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2607066350398928866}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.3
+  m_Height: 1.9
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.95, z: 0}
 --- !u!1 &2607066350398928894
 GameObject:
   m_ObjectHideFlags: 0
@@ -6135,6 +6268,8 @@ GameObject:
   - component: {fileID: 3428554728318561322}
   - component: {fileID: 3428554728317758474}
   - component: {fileID: 3428554728316661450}
+  - component: {fileID: 3428554728318857227}
+  - component: {fileID: 3428554728318857228}
   m_Layer: 0
   m_Name: MeleeWarriorSword
   m_TagString: Untagged
@@ -6142,6 +6277,32 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!65 &3428554728318857227
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3428554728318857226}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: -0.2, y: 1, z: 0.14}
+  m_Center: {x: -0.0002249724, y: 0.53, z: 0}
+--- !u!114 &3428554728318857228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3428554728318857226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ee12f4ba89664540ab50c724a76a0c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 113
 --- !u!1 &3448478261259806143
 GameObject:
   m_ObjectHideFlags: 0

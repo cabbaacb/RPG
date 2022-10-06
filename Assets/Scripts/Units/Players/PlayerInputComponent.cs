@@ -21,6 +21,7 @@ namespace RPG.Units.Player
             _controls = new PlayerControls();
             _controls.Unit.SwordAttack.performed += OnSwordAttack;
             _controls.Unit.LockTarget.performed += OnTargetLock;
+            _controls.Unit.ShieldAttack.performed += OnShieldAttack;
         }
 
         private void OnSwordAttack(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -28,6 +29,10 @@ namespace RPG.Units.Player
             CallOnAttackEvent();
         }
 
+        private void OnShieldAttack(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        {
+            CallOnShieldEvent();
+        }
         private void OnTargetLock(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
             CallOnTargetEvent();
@@ -54,6 +59,7 @@ namespace RPG.Units.Player
             _controls.Dispose();
             _controls.Unit.SwordAttack.performed -= OnSwordAttack;
             _controls.Unit.LockTarget.performed -= OnTargetLock;
+            _controls.Unit.ShieldAttack.performed -= OnShieldAttack;
         }
                 
         private Vector3 SetMovement()
