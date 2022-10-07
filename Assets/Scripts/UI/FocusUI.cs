@@ -52,12 +52,10 @@ namespace RPG.UI
                 case SideType.Friendly:
                     _image.color = _friendColor;
                     _nameText.color = _friendColor;
-                    Debug.Log(stats.Name);
                     break;
                 case SideType.Enemy:
                     _image.color = _enemyColor;
                     _nameText.color = _enemyColor;
-                    Debug.Log(stats.Name);
                     break;
             }
         }

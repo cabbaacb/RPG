@@ -24,7 +24,7 @@ namespace RPG.Units.Player
         private PlayerControls _controls;
         private Unit _target;
 
-        private Transform _pivot;
+        
         private Transform _camera;
 
         //current rotation
@@ -36,13 +36,16 @@ namespace RPG.Units.Player
         private Quaternion _pivotTargetRotation;
         private Vector3 _pivotEulers;
         private Quaternion _defaultCameraRotation;
-        
+
+
+        public Transform PivotTransform;
+        //public Transform PivotTransform { get => _pivot; }
 
         private void Start()
         {
             _target = transform.parent.GetComponent<Unit>();
-            _pivot = transform.GetChild(0);
-            _pivotEulers = _pivot.eulerAngles;
+            PivotTransform = transform.GetChild(0);
+            _pivotEulers = PivotTransform.eulerAngles;
 
             
             _camera = GetComponentInChildren<Camera>().transform;
@@ -76,7 +79,7 @@ namespace RPG.Units.Player
             _pivotTargetRotation = Quaternion.Euler(_angleY, _pivotEulers.y, _pivotEulers.z);
             _transformTargetRotation = Quaternion.Euler(0f, _angleX, 0f);
 
-            _pivot.localRotation = Quaternion.Slerp(_pivot.localRotation, _pivotTargetRotation, _smooting * Time.deltaTime);
+            PivotTransform.localRotation = Quaternion.Slerp(PivotTransform.localRotation, _pivotTargetRotation, _smooting * Time.deltaTime);
             transform.localRotation = Quaternion.Slerp(transform.localRotation, _transformTargetRotation, _smooting * Time.deltaTime);
 
 
@@ -87,15 +90,15 @@ namespace RPG.Units.Player
             var rotation = Quaternion.LookRotation(_target.Target.TargetPoint.position - _camera.position);
             _camera.rotation = Quaternion.Slerp(_camera.rotation, rotation, _lockCameraSpeed * Time.deltaTime);
 
-            rotation = Quaternion.LookRotation(_target.Target.TargetPoint.position - _pivot.position);
-            _pivot.rotation = Quaternion.Slerp(_pivot.rotation, rotation, _lockCameraSpeed * Time.deltaTime);
+            rotation = Quaternion.LookRotation(_target.Target.TargetPoint.position - PivotTransform.position);
+            PivotTransform.rotation = Quaternion.Slerp(PivotTransform.rotation, rotation, _lockCameraSpeed * Time.deltaTime);
             //_camera.LookAt(_target.Target.transform.position, Vector3.up);
             //transform.LookAt(_target.Target.transform.position, Vector3.up);
         }
 
         private void OnDrawGizmos()
         {
-            if (_target == null || _pivot == null || _camera == null) return;            
+            if (_target == null || PivotTransform == null || _camera == null) return;            
 
             Gizmos.DrawSphere(_target.transform.position, 0.15f);
 
@@ -103,7 +106,7 @@ namespace RPG.Units.Player
             Gizmos.DrawSphere(transform.position, 0.15f);
 
             Gizmos.color = Color.red;
-            Gizmos.DrawRay(_pivot.position, _pivot.forward);
+            Gizmos.DrawRay(PivotTransform.position, PivotTransform.forward);
 
             Gizmos.color = Color.yellow;
             Gizmos.DrawRay(_camera.position, _camera.forward);

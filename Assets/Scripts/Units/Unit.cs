@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace RPG.Units
 {
-    public class Unit : MonoBehaviour
+    public abstract class Unit : MonoBehaviour
     {
         [SerializeField]
         private Transform _targetPoint;
@@ -24,41 +24,52 @@ namespace RPG.Units
         // Start is called before the first frame update
         protected virtual void Start()
         {
-            _animator = GetComponentInChildren<Animator>();
-            _inputs = GetComponent<UnitInputComponent>();
-            _stats = GetComponent<UnitStatsComponent>();
-            _colliders = GetComponentsInChildren<TriggerComponent>();
+            _animator = this.FindComponent<Animator>();
+            _inputs = this.FindComponent<UnitInputComponent>();
+            _stats = this.FindComponent<UnitStatsComponent>();
+
+            _colliders = this.FindComponentsInChildren<TriggerComponent>();
             foreach (var collider in _colliders)
                 collider.Construct(this, _stats);
 #if UNITY_EDITOR
             if (_inputs == null)
             {
-                Editor.EditorExtentions.LogError($"unit {name} doesn't contain {nameof(UnitInputComponent)}", Editor.EditorMessageType.Game);
+                Editor.EditorExtentions.LogError($"unit {name} doesn't contain {nameof(UnitInputComponent)}", Editor.PriorityMessageType.Critical);
                 return;
             }
 #endif
             BindingEvents();
         }
 
+
+        private void OnValidate()
+        {
+            if (_targetPoint != null)
+                return;
+            else
+                _targetPoint = this.FindComponentsInChildren<Transform>().First(t => t.name == Editor.EditorConstants.FocusTargetPointName);
+        }
+
         // Update is called once per frame
         protected virtual void Update()
         {
             OnMove();
+            OnRotate();
         }
 
         protected virtual void BindingEvents(bool unbind = false)
         {
             if(unbind)
             {
-                _inputs.OnAttackEvent -= OnSwordAttack;
-                _inputs.OnShieldEvent -= OnShieldAttack;
-                _inputs.OnTargetEvent -= OnTargetUpdate;
+                _inputs.MainAttackEventHandler -= OnSwordAttack;
+                _inputs.AdditionalAttackEventHandler -= OnShieldAttack;
+                _inputs.TargetEventHandler -= OnTargetUpdate;
                 return;
             }
 
-            _inputs.OnAttackEvent += OnSwordAttack;
-            _inputs.OnShieldEvent += OnShieldAttack;
-            _inputs.OnTargetEvent += OnTargetUpdate;
+            _inputs.MainAttackEventHandler += OnSwordAttack;
+            _inputs.AdditionalAttackEventHandler += OnShieldAttack;
+            _inputs.TargetEventHandler += OnTargetUpdate;
         }
 
         private void OnSwordAttack()
@@ -125,9 +136,11 @@ namespace RPG.Units
             else
             {
                 _animator.SetBool("Moving", true);
-                transform.position += movement * _stats.MoveSpeed * Time.deltaTime;
+                transform.position += transform.TransformVector(movement) * _stats.MoveSpeed * Time.deltaTime;
             }
         }
+
+        protected abstract void OnRotate();
 
         private void OnAnimationEnd_UnityEvent(AnimationEvent data)
         {
@@ -156,7 +169,7 @@ namespace RPG.Units
 #if UNITY_EDITOR
             if (_inputs == null)
             {
-                Editor.EditorExtentions.LogError($"unit {name} doesn't contain {nameof(UnitInputComponent)}", Editor.EditorMessageType.Editor);
+                Editor.EditorExtentions.LogError($"unit {name} doesn't contain {nameof(UnitInputComponent)}", Editor.PriorityMessageType.Editor);
                 return;
             }
 #endif
