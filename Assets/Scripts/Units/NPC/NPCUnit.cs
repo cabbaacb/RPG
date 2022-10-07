@@ -6,6 +6,11 @@ namespace RPG.Units.NPC
 {
     public class NPCUnit : Unit
     {
+        protected override void Start()
+        {
+
+        }
+
         protected override void Update()
         {
             

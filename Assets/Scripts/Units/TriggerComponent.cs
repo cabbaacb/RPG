@@ -56,7 +56,7 @@ namespace RPG.Units
             var unit = other.GetComponent<UnitStatsComponent>();
             if (unit == null) return;
 
-            unit.Health -= 5f;
+            unit.CurrentHealth -= 5f;
 
             if(_id == 115)
             {
@@ -68,7 +68,7 @@ namespace RPG.Units
             }
 
 
-            if (unit.Health <= 0f) Destroy(unit.gameObject);
+            if (unit.CurrentHealth <= 0f) Destroy(unit.gameObject);
         }
 
 

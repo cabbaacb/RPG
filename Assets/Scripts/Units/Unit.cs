@@ -22,7 +22,7 @@ namespace RPG.Units
         public Transform TargetPoint => _targetPoint;
 
         // Start is called before the first frame update
-        void Start()
+        protected virtual void Start()
         {
             _animator = GetComponentInChildren<Animator>();
             _inputs = GetComponent<UnitInputComponent>();
