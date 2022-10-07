@@ -30,10 +30,13 @@ namespace RPG.Units
             _colliders = GetComponentsInChildren<TriggerComponent>();
             foreach (var collider in _colliders)
                 collider.Construct(this, _stats);
-
-
-            if (_inputs == null) return;
-
+#if UNITY_EDITOR
+            if (_inputs == null)
+            {
+                Editor.EditorExtentions.LogError($"unit {name} doesn't contain {nameof(UnitInputComponent)}", Editor.EditorMessageType.Game);
+                return;
+            }
+#endif
             BindingEvents();
         }
 
@@ -150,6 +153,14 @@ namespace RPG.Units
 
         private void OnDestroy()
         {
+#if UNITY_EDITOR
+            if (_inputs == null)
+            {
+                Editor.EditorExtentions.LogError($"unit {name} doesn't contain {nameof(UnitInputComponent)}", Editor.EditorMessageType.Editor);
+                return;
+            }
+#endif
+
             BindingEvents(true);
         }
     }
