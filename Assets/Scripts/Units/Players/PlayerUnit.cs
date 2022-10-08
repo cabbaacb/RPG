@@ -17,8 +17,9 @@ namespace RPG.Units.Player
         // Start is called before the first frame update
         protected override void Start()
         {
-            base.Start();
-            _camera = this.FindComponentInChildren<CameraComponent>();
+            base.Start();            
+            if (_camera == null)
+                _camera = this.FindComponentInChildren<CameraComponent>();
         }
 
 

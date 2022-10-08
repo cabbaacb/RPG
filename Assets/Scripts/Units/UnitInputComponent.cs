@@ -20,12 +20,20 @@ namespace RPG.Units
         public SimpleHandle TargetEventHandler;
         public SimpleHandle AdditionalAttackEventHandler;
 
-        //protected void CallOnAttackEvent() => MainAttackEventHandler?.Invoke();
+        protected void CallOnAttackEvent() => MainAttackEventHandler?.Invoke();
+        protected void CallOnAdditionalAttackEvent() => AdditionalAttackEventHandler?.Invoke();
+        protected void CallOnTargetEvent() => TargetEventHandler?.Invoke();
+
+
         protected virtual void Awake()
         {
             var fields = GetType().GetFields(BindingFlags.Instance | BindingFlags.Public).Where(t => t.FieldType == typeof(SimpleHandle));
             foreach (var it in fields)
                 _events.Add(it.Name, it);
+
+            var strExpr = Expression.Parameter(typeof(string));
+            var dicExpr = Expression.Constant(_events, typeof(Dictionary<string, FieldInfo>));
+
 
             var field = _events[name];
             var fieldExpr = Expression.Field(Expression.Constant(this), field);

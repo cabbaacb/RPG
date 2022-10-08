@@ -18,25 +18,26 @@ namespace RPG.Units.Player
 
         protected override void Awake()
         {
-            base.Awake();
+            //base.Awake();
             _controls = new PlayerControls();
-            _controls.Unit.SwordAttack.performed += OnMainAttack;
+            _controls.Unit.MainAction.performed += OnMainAction;
             _controls.Unit.LockTarget.performed += OnTargetLock;
-            _controls.Unit.ShieldAttack.performed += OnAdditionalAttack;
+            _controls.Unit.AdditionalAction.performed += OnAdditionalAction;
         }
 
-        private void OnMainAttack(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        private void OnMainAction(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
-            CallSimplerHandle(nameof(MainAttackEventHandler));
+            //CallSimplerHandle(nameof(MainAttackEventHandler));
+            CallOnAttackEvent();
         }
 
-        private void OnAdditionalAttack(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        private void OnAdditionalAction(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
-            CallSimplerHandle(nameof(AdditionalAttackEventHandler));
+            CallOnAdditionalAttackEvent();
         }
         private void OnTargetLock(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
-            CallSimplerHandle(nameof(TargetEventHandler));
+            CallOnTargetEvent();
         }
 
         // Update is called once per frame
@@ -58,9 +59,9 @@ namespace RPG.Units.Player
         private void OnDestroy()
         {
             _controls.Dispose();
-            _controls.Unit.SwordAttack.performed -= OnMainAttack;
+            _controls.Unit.MainAction.performed -= OnMainAction;
             _controls.Unit.LockTarget.performed -= OnTargetLock;
-            _controls.Unit.ShieldAttack.performed -= OnAdditionalAttack;
+            _controls.Unit.AdditionalAction.performed -= OnAdditionalAction;
         }
                 
         private Vector3 SetMovement()

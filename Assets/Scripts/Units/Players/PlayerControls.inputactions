@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SwordAttack",
+                    "name": "MainAction",
                     "type": "Button",
                     "id": "713f429d-9401-4cab-9120-6566b4787265",
                     "expectedControlType": "Button",
@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ShieldAttack",
+                    "name": "AdditionalAction",
                     "type": "Button",
                     "id": "2f4ebf1d-1b06-43af-9fa9-e9d7b8cab813",
                     "expectedControlType": "Button",
@@ -125,7 +125,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SwordAttack",
+                    "action": "MainAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -136,7 +136,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ShieldAttack",
+                    "action": "AdditionalAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -205,6 +205,7 @@ MonoBehaviour:
   _rotateSpeed: 1.28
   _smooting: 8
   _lockCameraSpeed: 3
+  PivotTransform: {fileID: 462381620}
 --- !u!1 &86044872
 GameObject:
   m_ObjectHideFlags: 0
@@ -6350,8 +6351,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74ec37d711c54914ab750199acbdbc51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetPoint: {fileID: 0}
-  _camera: {fileID: 0}
+  _targetPoint: {fileID: 2607066350398564924}
+  _camera: {fileID: 81189350}
 --- !u!54 &2607066350398928871
 Rigidbody:
   m_ObjectHideFlags: 0

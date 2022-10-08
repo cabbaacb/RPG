@@ -48,7 +48,7 @@ namespace RPG.Units.Player
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SwordAttack"",
+                    ""name"": ""MainAction"",
                     ""type"": ""Button"",
                     ""id"": ""713f429d-9401-4cab-9120-6566b4787265"",
                     ""expectedControlType"": ""Button"",
@@ -57,7 +57,7 @@ namespace RPG.Units.Player
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ShieldAttack"",
+                    ""name"": ""AdditionalAction"",
                     ""type"": ""Button"",
                     ""id"": ""2f4ebf1d-1b06-43af-9fa9-e9d7b8cab813"",
                     ""expectedControlType"": ""Button"",
@@ -149,7 +149,7 @@ namespace RPG.Units.Player
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SwordAttack"",
+                    ""action"": ""MainAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -160,7 +160,7 @@ namespace RPG.Units.Player
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ShieldAttack"",
+                    ""action"": ""AdditionalAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -212,8 +212,8 @@ namespace RPG.Units.Player
             m_Unit = asset.FindActionMap("Unit", throwIfNotFound: true);
             m_Unit_Vertical = m_Unit.FindAction("Vertical", throwIfNotFound: true);
             m_Unit_Horizontal = m_Unit.FindAction("Horizontal", throwIfNotFound: true);
-            m_Unit_SwordAttack = m_Unit.FindAction("SwordAttack", throwIfNotFound: true);
-            m_Unit_ShieldAttack = m_Unit.FindAction("ShieldAttack", throwIfNotFound: true);
+            m_Unit_MainAction = m_Unit.FindAction("MainAction", throwIfNotFound: true);
+            m_Unit_AdditionalAction = m_Unit.FindAction("AdditionalAction", throwIfNotFound: true);
             m_Unit_LockTarget = m_Unit.FindAction("LockTarget", throwIfNotFound: true);
             // Camera
             m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
@@ -279,8 +279,8 @@ namespace RPG.Units.Player
         private IUnitActions m_UnitActionsCallbackInterface;
         private readonly InputAction m_Unit_Vertical;
         private readonly InputAction m_Unit_Horizontal;
-        private readonly InputAction m_Unit_SwordAttack;
-        private readonly InputAction m_Unit_ShieldAttack;
+        private readonly InputAction m_Unit_MainAction;
+        private readonly InputAction m_Unit_AdditionalAction;
         private readonly InputAction m_Unit_LockTarget;
         public struct UnitActions
         {
@@ -288,8 +288,8 @@ namespace RPG.Units.Player
             public UnitActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Vertical => m_Wrapper.m_Unit_Vertical;
             public InputAction @Horizontal => m_Wrapper.m_Unit_Horizontal;
-            public InputAction @SwordAttack => m_Wrapper.m_Unit_SwordAttack;
-            public InputAction @ShieldAttack => m_Wrapper.m_Unit_ShieldAttack;
+            public InputAction @MainAction => m_Wrapper.m_Unit_MainAction;
+            public InputAction @AdditionalAction => m_Wrapper.m_Unit_AdditionalAction;
             public InputAction @LockTarget => m_Wrapper.m_Unit_LockTarget;
             public InputActionMap Get() { return m_Wrapper.m_Unit; }
             public void Enable() { Get().Enable(); }
@@ -306,12 +306,12 @@ namespace RPG.Units.Player
                     @Horizontal.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnHorizontal;
                     @Horizontal.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnHorizontal;
                     @Horizontal.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnHorizontal;
-                    @SwordAttack.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnSwordAttack;
-                    @SwordAttack.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnSwordAttack;
-                    @SwordAttack.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnSwordAttack;
-                    @ShieldAttack.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnShieldAttack;
-                    @ShieldAttack.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnShieldAttack;
-                    @ShieldAttack.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnShieldAttack;
+                    @MainAction.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnMainAction;
+                    @MainAction.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnMainAction;
+                    @MainAction.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnMainAction;
+                    @AdditionalAction.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnAdditionalAction;
+                    @AdditionalAction.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnAdditionalAction;
+                    @AdditionalAction.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnAdditionalAction;
                     @LockTarget.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnLockTarget;
                     @LockTarget.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnLockTarget;
                     @LockTarget.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnLockTarget;
@@ -325,12 +325,12 @@ namespace RPG.Units.Player
                     @Horizontal.started += instance.OnHorizontal;
                     @Horizontal.performed += instance.OnHorizontal;
                     @Horizontal.canceled += instance.OnHorizontal;
-                    @SwordAttack.started += instance.OnSwordAttack;
-                    @SwordAttack.performed += instance.OnSwordAttack;
-                    @SwordAttack.canceled += instance.OnSwordAttack;
-                    @ShieldAttack.started += instance.OnShieldAttack;
-                    @ShieldAttack.performed += instance.OnShieldAttack;
-                    @ShieldAttack.canceled += instance.OnShieldAttack;
+                    @MainAction.started += instance.OnMainAction;
+                    @MainAction.performed += instance.OnMainAction;
+                    @MainAction.canceled += instance.OnMainAction;
+                    @AdditionalAction.started += instance.OnAdditionalAction;
+                    @AdditionalAction.performed += instance.OnAdditionalAction;
+                    @AdditionalAction.canceled += instance.OnAdditionalAction;
                     @LockTarget.started += instance.OnLockTarget;
                     @LockTarget.performed += instance.OnLockTarget;
                     @LockTarget.canceled += instance.OnLockTarget;
@@ -375,8 +375,8 @@ namespace RPG.Units.Player
         {
             void OnVertical(InputAction.CallbackContext context);
             void OnHorizontal(InputAction.CallbackContext context);
-            void OnSwordAttack(InputAction.CallbackContext context);
-            void OnShieldAttack(InputAction.CallbackContext context);
+            void OnMainAction(InputAction.CallbackContext context);
+            void OnAdditionalAction(InputAction.CallbackContext context);
             void OnLockTarget(InputAction.CallbackContext context);
         }
         public interface ICameraActions

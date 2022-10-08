@@ -61,18 +61,18 @@ namespace RPG.Units
         {
             if(unbind)
             {
-                _inputs.MainAttackEventHandler -= OnSwordAttack;
-                _inputs.AdditionalAttackEventHandler -= OnShieldAttack;
+                _inputs.MainAttackEventHandler -= OnMainAction;
+                _inputs.AdditionalAttackEventHandler -= OnAdditionalAction;
                 _inputs.TargetEventHandler -= OnTargetUpdate;
                 return;
             }
 
-            _inputs.MainAttackEventHandler += OnSwordAttack;
-            _inputs.AdditionalAttackEventHandler += OnShieldAttack;
+            _inputs.MainAttackEventHandler += OnMainAction;
+            _inputs.AdditionalAttackEventHandler += OnAdditionalAction;
             _inputs.TargetEventHandler += OnTargetUpdate;
         }
 
-        private void OnSwordAttack()
+        private void OnMainAction()
         {
             if (_inAnimation) return;
 
@@ -80,7 +80,7 @@ namespace RPG.Units
             _inAnimation = true;
         }
 
-        private void OnShieldAttack()
+        private void OnAdditionalAction()
         {
             if (_inAnimation || _stats.CurrentCalldown > 0f) return;
 
