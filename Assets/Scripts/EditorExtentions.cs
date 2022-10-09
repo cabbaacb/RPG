@@ -42,7 +42,7 @@ namespace RPG.Editor
 
     public static class EditorConstants
     {
-        public static readonly string FocusTargetPointName = "B-neck";
+        public static readonly string FocusTargetPointName = "Neck";
     }
 
 

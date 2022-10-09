@@ -41,14 +41,17 @@ namespace RPG.Units
             BindingEvents();
         }
 
-
-        private void OnValidate()
+#if UNITY_EDITOR
+        [ContextMenu("UpdateInternalStates")]
+        private void UpdateInternalStates()
         {
             if (_targetPoint != null)
                 return;
             else
                 _targetPoint = this.FindComponentsInChildren<Transform>().First(t => t.name == Editor.EditorConstants.FocusTargetPointName);
         }
+#endif
+
 
         // Update is called once per frame
         protected virtual void Update()
@@ -76,7 +79,7 @@ namespace RPG.Units
         {
             if (_inAnimation) return;
 
-            _animator.SetTrigger("SwordAttack");
+            _animator.SetTrigger("MainAction");
             _inAnimation = true;
         }
 
@@ -84,7 +87,7 @@ namespace RPG.Units
         {
             if (_inAnimation || _stats.CurrentCalldown > 0f) return;
 
-            _animator.SetTrigger("ShieldAttack");
+            _animator.SetTrigger("AdditionalAction");
             _inAnimation = true;
 
             _stats.CurrentCalldown = _stats.CalldownShieldAttack;

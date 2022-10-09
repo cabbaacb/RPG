@@ -8,6 +8,12 @@ namespace RPG.Units.Player
     {
         [SerializeField]
         private CameraComponent _camera;
+        [SerializeField]
+        private WeaponType _weaponType = WeaponType.SwordAndShield;
+
+
+        //is the weapon taken
+        private bool _isArms;
 
         protected override void OnRotate()
         {

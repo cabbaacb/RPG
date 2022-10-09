@@ -73,6 +73,24 @@ namespace RPG.Units.Player
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MeleeSet"",
+                    ""type"": ""Button"",
+                    ""id"": ""e2ed391e-4f23-4a33-8140-ac055c18f18d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RangeSet"",
+                    ""type"": ""Button"",
+                    ""id"": ""c1ed43cd-0ae9-4a12-9978-17a612f2e1d8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -174,6 +192,28 @@ namespace RPG.Units.Player
                     ""action"": ""LockTarget"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6ce28e55-3080-4a0e-88d5-edd3715de403"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MeleeSet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aad8888e-bdbe-4d8b-aed3-1e6172467736"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RangeSet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -215,6 +255,8 @@ namespace RPG.Units.Player
             m_Unit_MainAction = m_Unit.FindAction("MainAction", throwIfNotFound: true);
             m_Unit_AdditionalAction = m_Unit.FindAction("AdditionalAction", throwIfNotFound: true);
             m_Unit_LockTarget = m_Unit.FindAction("LockTarget", throwIfNotFound: true);
+            m_Unit_MeleeSet = m_Unit.FindAction("MeleeSet", throwIfNotFound: true);
+            m_Unit_RangeSet = m_Unit.FindAction("RangeSet", throwIfNotFound: true);
             // Camera
             m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
             m_Camera_Delta = m_Camera.FindAction("Delta", throwIfNotFound: true);
@@ -282,6 +324,8 @@ namespace RPG.Units.Player
         private readonly InputAction m_Unit_MainAction;
         private readonly InputAction m_Unit_AdditionalAction;
         private readonly InputAction m_Unit_LockTarget;
+        private readonly InputAction m_Unit_MeleeSet;
+        private readonly InputAction m_Unit_RangeSet;
         public struct UnitActions
         {
             private @PlayerControls m_Wrapper;
@@ -291,6 +335,8 @@ namespace RPG.Units.Player
             public InputAction @MainAction => m_Wrapper.m_Unit_MainAction;
             public InputAction @AdditionalAction => m_Wrapper.m_Unit_AdditionalAction;
             public InputAction @LockTarget => m_Wrapper.m_Unit_LockTarget;
+            public InputAction @MeleeSet => m_Wrapper.m_Unit_MeleeSet;
+            public InputAction @RangeSet => m_Wrapper.m_Unit_RangeSet;
             public InputActionMap Get() { return m_Wrapper.m_Unit; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -315,6 +361,12 @@ namespace RPG.Units.Player
                     @LockTarget.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnLockTarget;
                     @LockTarget.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnLockTarget;
                     @LockTarget.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnLockTarget;
+                    @MeleeSet.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnMeleeSet;
+                    @MeleeSet.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnMeleeSet;
+                    @MeleeSet.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnMeleeSet;
+                    @RangeSet.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnRangeSet;
+                    @RangeSet.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnRangeSet;
+                    @RangeSet.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnRangeSet;
                 }
                 m_Wrapper.m_UnitActionsCallbackInterface = instance;
                 if (instance != null)
@@ -334,6 +386,12 @@ namespace RPG.Units.Player
                     @LockTarget.started += instance.OnLockTarget;
                     @LockTarget.performed += instance.OnLockTarget;
                     @LockTarget.canceled += instance.OnLockTarget;
+                    @MeleeSet.started += instance.OnMeleeSet;
+                    @MeleeSet.performed += instance.OnMeleeSet;
+                    @MeleeSet.canceled += instance.OnMeleeSet;
+                    @RangeSet.started += instance.OnRangeSet;
+                    @RangeSet.performed += instance.OnRangeSet;
+                    @RangeSet.canceled += instance.OnRangeSet;
                 }
             }
         }
@@ -378,6 +436,8 @@ namespace RPG.Units.Player
             void OnMainAction(InputAction.CallbackContext context);
             void OnAdditionalAction(InputAction.CallbackContext context);
             void OnLockTarget(InputAction.CallbackContext context);
+            void OnMeleeSet(InputAction.CallbackContext context);
+            void OnRangeSet(InputAction.CallbackContext context);
         }
         public interface ICameraActions
         {
