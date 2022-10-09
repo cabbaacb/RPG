@@ -10,12 +10,12 @@ namespace RPG.Units
         [SerializeField]
         private Transform _targetPoint;
 
-        private Animator _animator;
-        private UnitInputComponent _inputs;
+        protected UnitInputComponent _inputs;
+        protected Animator _animator;
+
         private UnitStatsComponent _stats;
         private bool _inAnimation;
         private TriggerComponent[] _colliders;
-
         public SimpleHandle OnTargetLostHandler;
         
         public Unit Target { get; protected set; }
