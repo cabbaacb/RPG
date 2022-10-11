@@ -5,12 +5,7 @@ using UnityEngine;
 namespace RPG.Units.NPC
 {
     public class NPCUnit : Unit
-    {
-        protected override void OnRotate()
-        {
-            throw new System.NotImplementedException();
-        }
-
+    {       
         protected override void Start()
         {
 

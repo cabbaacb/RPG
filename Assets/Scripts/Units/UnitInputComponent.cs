@@ -11,7 +11,7 @@ namespace RPG.Units
     public class UnitInputComponent : MonoBehaviour
     {
         private Dictionary<string, FieldInfo> _events = new Dictionary<string, FieldInfo>();
-        private Func<FieldInfo, Delegate[]> _expression;
+        private Func<string, Delegate[]> _expression;
 
         protected Vector3 _movement;
 
@@ -34,13 +34,12 @@ namespace RPG.Units
             var fields = GetType().GetFields(BindingFlags.Instance | BindingFlags.Public).Where(t => t.FieldType == typeof(SimpleHandle));
             foreach (var it in fields)
                 _events.Add(it.Name, it);
-            /*
+            
             var strExpr = Expression.Parameter(typeof(string));
-            var dicExpr = Expression.Constant(_events, typeof(Dictionary<string, FieldInfo>));
+            var dicConstExpr = Expression.Constant(_events, typeof(Dictionary<string, FieldInfo>));
+            var valueExpr = Expression.Property(dicConstExpr, typeof(Dictionary<string, FieldInfo>).GetProperty("Item"), strExpr);
 
-
-            var field = _events[name];
-            var fieldExpr = Expression.Field(Expression.Constant(this), field);
+            var fieldExpr = Expression.Call(valueExpr, typeof(FieldInfo).GetMethod(nameof(FieldInfo.GetValue)), Expression.Constant(this));
 
             var delegates = Expression.Convert(fieldExpr, typeof(MulticastDelegate));
 
@@ -48,26 +47,16 @@ namespace RPG.Units
             var getInvoExpr = Expression.Call(delegates, methodInfo);
 
             var arrayExpr = Expression.Convert(getInvoExpr, typeof(Delegate[]));
-            _expression = Expression.Lambda<Func<FieldInfo, Delegate[]>>(arrayExpr, Expression.Parameter(typeof(FieldInfo))).Compile();
-            */
+            _expression = Expression.Lambda<Func<string, Delegate[]>>(arrayExpr, strExpr).Compile();
 
         }
 
         protected void CallSimplerHandle(string name)
         {
-            var field = _events[name];
-            var fieldExpr = Expression.Field(Expression.Constant(this), field);
+            //var field = _events[name];
+            //var fieldExpr = Expression.Field(Expression.Constant(this), field);
 
-            var delegates = Expression.Convert(fieldExpr, typeof(MulticastDelegate));
-
-            var methodInfo = typeof(MulticastDelegate).GetMethod(nameof(MulticastDelegate.GetInvocationList));
-            var getInvoExpr = Expression.Call(delegates, methodInfo);
-
-            var arrayExpr = Expression.Convert(getInvoExpr, typeof(Delegate[]));
-            _expression = Expression.Lambda<Func<FieldInfo, Delegate[]>>(arrayExpr, Expression.Parameter(typeof(FieldInfo))).Compile();
-
-
-            foreach (var @event in _expression.Invoke(_events[name]))
+            foreach (var @event in _expression.Invoke(name))
             {
                 @event.Method.Invoke(@event.Target, null);
             }

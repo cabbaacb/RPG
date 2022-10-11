@@ -57,7 +57,7 @@ namespace RPG.Units
         protected virtual void Update()
         {
             OnMove();
-            OnRotate();
+            //OnRotate();
         }
 
         protected virtual void BindingEvents(bool unbind = false)
@@ -124,7 +124,7 @@ namespace RPG.Units
 
         }
 
-        private void OnMove()
+        protected virtual void OnMove()
         {
             if (_inAnimation) return;
 
@@ -143,7 +143,7 @@ namespace RPG.Units
             }
         }
 
-        protected abstract void OnRotate();
+        //protected abstract void OnRotate();
 
         private void OnAnimationEnd_UnityEvent(AnimationEvent data)
         {

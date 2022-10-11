@@ -10,14 +10,32 @@ namespace RPG.Units.Player
         private CameraComponent _camera;
         [SerializeField]
         private WeaponType _weaponType = WeaponType.SwordAndShield;
-
+        [SerializeField, Range(0.1f, 10f)]
+        private float _rotateSpeed = 5f;
 
         //is the weapon taken
         private bool _isArms;
 
-        protected override void OnRotate()
+        protected override void OnMove()
         {
-            transform.rotation = new Quaternion(0f, _camera.PivotTransform.rotation.y, 0f, _camera.PivotTransform.rotation.w);
+            base.OnMove();
+            ref var movement = ref _inputs.MoveDirection();
+
+            if(Target != null)
+            {
+                transform.rotation = Quaternion.Euler(0f, _camera.PivotTransform.eulerAngles.y, 0f);
+            }
+            else if(movement.z > 0f && movement.x == 0f)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.Euler(0f, _camera.transform.eulerAngles.y, 0f), _rotateSpeed * Time.deltaTime);
+            }
+            else if(movement.z < 0f && movement.x == 0f)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.Euler(0f, _camera.transform.eulerAngles.y, 0f), _rotateSpeed / 2f * Time.deltaTime);
+            }
+
         }
 
         // Start is called before the first frame update
