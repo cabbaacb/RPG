@@ -11,6 +11,20 @@ namespace RPG
     public class ReadOnlyAttribute : PropertyAttribute { }
     public class SQRFloatAttribute : PropertyAttribute { }
 
+
+    public static class Constants
+    {
+        public static readonly string FloorTag = "Floor";
+        public static readonly string ObstacleLayerName = "Obstacles";
+        public static int ObstacleLayerInt;
+
+
+        public static void Construct()
+        {
+            ObstacleLayerInt = LayerMask.NameToLayer(ObstacleLayerName);
+        }
+    }
+
     public static class MonoBehaviourExtentions
     {
         public static T FindComponent<T>(this MonoBehaviour source) where T : Component

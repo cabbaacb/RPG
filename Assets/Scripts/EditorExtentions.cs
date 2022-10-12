@@ -37,7 +37,7 @@ namespace RPG.Editor
             _dic = new Dictionary<PriorityMessageType, string>()
             {
                 { PriorityMessageType.None, string.Empty},
-                { PriorityMessageType.Notification, "<color=#002244[Notification]</color>" },
+                { PriorityMessageType.Notification, "<color=#002244>[Notification]</color>" },
                 { PriorityMessageType.Low, "<color=#000077>[Editor]</color>" },
                 { PriorityMessageType.Critical, "<color=#880000>[Game]</color>" }
             };
@@ -49,6 +49,7 @@ namespace RPG.Editor
     {
         public static readonly string FocusTargetPointName = "Neck";
         public static readonly string AirColliderName = "AirCollider";
+        public static readonly string TriggerLayer = "Triggers";
         public static Bounds AirColliderBound = new Bounds(new Vector3(0f, 0.037f, 0f), new Vector3(0.5f, 0.08f, 0.5f));
     }
 
