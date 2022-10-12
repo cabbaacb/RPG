@@ -87,10 +87,10 @@ namespace RPG.Units.Player
 
         private void LockCamera()
         {
-            var rotation = Quaternion.LookRotation(_target.Target.TargetPoint.position - _camera.position);
+            var rotation = Quaternion.LookRotation(_target.Target.GetTargetPoint.position - _camera.position);
             _camera.rotation = Quaternion.Slerp(_camera.rotation, rotation, _lockCameraSpeed * Time.deltaTime);
 
-            rotation = Quaternion.LookRotation(_target.Target.TargetPoint.position - PivotTransform.position);
+            rotation = Quaternion.LookRotation(_target.Target.GetTargetPoint.position - PivotTransform.position);
             PivotTransform.rotation = Quaternion.Slerp(PivotTransform.rotation, rotation, _lockCameraSpeed * Time.deltaTime);
             //_camera.LookAt(_target.Target.transform.position, Vector3.up);
             //transform.LookAt(_target.Target.transform.position, Vector3.up);

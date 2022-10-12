@@ -6,6 +6,10 @@ namespace RPG
 {
     public delegate void SimpleHandle();
     public delegate void SimpleHandle<T>(T arg);
+    public delegate void SimpleHandle<T1, T2>(T1 arg1, T2 arg2);
+
+    public class ReadOnlyAttribute : PropertyAttribute { }
+    public class SQRFloatAttribute : PropertyAttribute { }
 
     public static class MonoBehaviourExtentions
     {
@@ -15,8 +19,7 @@ namespace RPG
 #if UNITY_EDITOR
             if(component == null)
             {
-                Editor.EditorExtentions.LogError($"Component : <b>{typeof(T).Name}</b> not found on GameObject : <i>{source.name}</i>",
-                    Editor.PriorityMessageType.Critical);
+                PrintLog(typeof(T).Name, source.name);
             }
 #endif
             return component;
@@ -28,8 +31,7 @@ namespace RPG
 #if UNITY_EDITOR
             if (component == null)
             {
-                Editor.EditorExtentions.LogError($"Component : <b>{typeof(T).Name}</b> not found on GameObject : <i>{source.name}</i>",
-                    Editor.PriorityMessageType.Critical);
+                PrintLog(typeof(T).Name, source.name);
             }
 #endif
             return component;
@@ -41,16 +43,19 @@ namespace RPG
 #if UNITY_EDITOR
             if(component.Length == 0 || component == null)
             {
-                Editor.EditorExtentions.LogError($"Components : <b>{typeof(T).Name}</b>" +
-                    $"not found on GameObject : <i>{source.name}</i>", Editor.PriorityMessageType.Critical);
+                PrintLog(typeof(T).Name, source.name);
             }
 #endif
             return component;
-
-
         }
 
-
+        private static void PrintLog(string componentName, string name)
+        {
+#if UNITY_EDITOR
+            Editor.EditorExtentions.LogError($"Component : <b>{componentName}</b>" +
+                    $"not found on GameObject : <i>{name}</i>", Editor.PriorityMessageType.Critical);
+#endif
+        }
 
 
     }

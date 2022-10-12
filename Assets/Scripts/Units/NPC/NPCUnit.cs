@@ -15,5 +15,12 @@ namespace RPG.Units.NPC
         {
             
         }
+
+        protected override void FindNewTarget()
+        {
+            var player = _unitManager.GetPlayer;
+            Target = player;
+        }
+
     }
 }

@@ -9,13 +9,31 @@ namespace RPG.Units.Player
         [SerializeField]
         private CameraComponent _camera;
         [SerializeField]
-        private WeaponType _weaponType = WeaponType.SwordAndShield;
+        private WeaponSetComponent _sets;
+        //private WeaponType _weaponType = WeaponType.SwordAndShield;
         [SerializeField, Range(0.1f, 10f)]
         private float _rotateSpeed = 5f;
 
         //is the weapon taken
         private bool _isArms;
 
+        protected override void FindNewTarget()
+        {
+            var units = _unitManager.GetNPCs;
+            var distance = _sqrtFindTargetDistance;
+            Target = null;
+
+            foreach(var unit in units)
+            {
+                if (unit.GetStats.SideType == GetStats.SideType) continue;
+                var currentDistance = (unit.transform.position - transform.position).sqrMagnitude;
+                if (currentDistance < distance)
+                {
+                    distance = currentDistance;
+                    Target = unit;
+                }
+            }
+        }
         protected override void OnMove()
         {
             base.OnMove();
@@ -44,13 +62,14 @@ namespace RPG.Units.Player
             base.Start();            
             if (_camera == null)
                 _camera = this.FindComponentInChildren<CameraComponent>();
+            _sets = this.FindComponent<WeaponSetComponent>();
         }
 
         private void OnRearms(WeaponType type)
         {
-            _weaponType = type;
+            _sets.WeaponType = type;
 
-            switch (_weaponType)
+            switch (type)
             {
                 case WeaponType.None:
                     break;

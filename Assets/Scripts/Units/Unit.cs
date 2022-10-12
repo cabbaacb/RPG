@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Zenject;
+using RPG.Managers;
 
 namespace RPG.Units
 {
@@ -9,6 +11,8 @@ namespace RPG.Units
     {
         [SerializeField]
         private Transform _targetPoint;
+        [SerializeField, SQRFloat, Tooltip("max distance^2")]
+        protected float _sqrtFindTargetDistance = 500f;
 
         protected UnitInputComponent _inputs;
         protected Animator _animator;
@@ -16,10 +20,15 @@ namespace RPG.Units
         private UnitStatsComponent _stats;
         private bool _inAnimation;
         private TriggerComponent[] _colliders;
+        [Inject]
+        protected UnitManager _unitManager;
+        
+
         public SimpleHandle OnTargetLostHandler;
         
         public Unit Target { get; protected set; }
-        public Transform TargetPoint => _targetPoint;
+        public Transform GetTargetPoint => _targetPoint;
+        public UnitStatsComponent GetStats => _stats;
 
         // Start is called before the first frame update
         protected virtual void Start()
@@ -59,6 +68,8 @@ namespace RPG.Units
             OnMove();
             //OnRotate();
         }
+
+        protected abstract void FindNewTarget();
 
         protected virtual void BindingEvents(bool unbind = false)
         {
@@ -103,24 +114,7 @@ namespace RPG.Units
                 return;
             }
 
-            var distance = float.MaxValue;
-            UnitStatsComponent target = null;
-
-            var units = FindObjectsOfType<UnitStatsComponent>();
-            foreach(var unit in units)
-            {
-                if (unit.SideType == _stats.SideType) continue;
-
-                var currentDistance = (unit.transform.position - transform.position).sqrMagnitude;
-                if (currentDistance < distance)
-                {
-                    distance = currentDistance;
-                    target = unit;
-                }
-            }
-
-            if (target == null) Debug.LogError("No bots in scene");
-            Target = target.GetComponent<Unit>();
+            FindNewTarget();
 
         }
 
@@ -172,7 +166,7 @@ namespace RPG.Units
 #if UNITY_EDITOR
             if (_inputs == null)
             {
-                Editor.EditorExtentions.LogError($"unit {name} doesn't contain {nameof(UnitInputComponent)}", Editor.PriorityMessageType.Editor);
+                Editor.EditorExtentions.LogError($"unit {name} doesn't contain {nameof(UnitInputComponent)}", Editor.PriorityMessageType.Low);
                 return;
             }
 #endif
