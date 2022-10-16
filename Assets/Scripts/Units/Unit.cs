@@ -14,28 +14,29 @@ namespace RPG.Units
         [SerializeField, SQRFloat, Tooltip("max distance^2")]
         protected float _sqrtFindTargetDistance = 500f;
 
-        protected UnitInputComponent _inputs;
-        protected Animator _animator;
-
-        private UnitStatsComponent _stats;
+        
         private bool _inAnimation;
         private TriggerComponent[] _colliders;
+
         [Inject]
         protected UnitManager _unitManager;
-        
+        protected UnitStateComponent _stats;
+        protected UnitInputComponent _inputs;
+        protected Animator _animator;
 
         public SimpleHandle OnTargetLostHandler;
         
         public Unit Target { get; protected set; }
         public Transform GetTargetPoint => _targetPoint;
-        public UnitStatsComponent GetStats => _stats;
+        public UnitStateComponent GetStats => _stats;
+
 
         // Start is called before the first frame update
         protected virtual void Start()
         {
             _animator = this.FindComponent<Animator>();
             _inputs = this.FindComponent<UnitInputComponent>();
-            _stats = this.FindComponent<UnitStatsComponent>();
+            _stats = this.FindComponent<UnitStateComponent>();
 
             _colliders = this.FindComponentsInChildren<TriggerComponent>();
             foreach (var collider in _colliders)
@@ -133,8 +134,9 @@ namespace RPG.Units
             else
             {
                 _animator.SetBool("Moving", true);
-                transform.position += transform.TransformVector(movement) * _stats.MoveSpeed * Time.deltaTime;
+                transform.position += transform.TransformVector(movement) * _stats.GetMoveSpeed * Time.deltaTime;
             }
+
         }
 
         //protected abstract void OnRotate();

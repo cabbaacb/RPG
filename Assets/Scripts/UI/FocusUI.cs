@@ -27,10 +27,10 @@ namespace RPG.UI
         void LateUpdate()
         {
             var ray = Camera.main.ScreenPointToRay(transform.position);
-            Units.UnitStatsComponent stats;
+            Units.UnitStateComponent stats;
             if(Physics.Raycast(ray, out var hit, _maxDistance))
             {
-                stats = hit.transform.GetComponent<Units.UnitStatsComponent>();
+                stats = hit.transform.GetComponent<Units.UnitStateComponent>();
                 if (stats == null)
                 {
                     ClearFocus();

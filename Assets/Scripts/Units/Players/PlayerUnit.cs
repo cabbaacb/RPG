@@ -54,6 +54,10 @@ namespace RPG.Units.Player
                     Quaternion.Euler(0f, _camera.transform.eulerAngles.y, 0f), _rotateSpeed / 2f * Time.deltaTime);
             }
 
+
+            if ((movement.z <= 0f || movement.x != 0f) && _stats.InSprint)
+                OnSprint();
+
         }
 
         // Start is called before the first frame update
@@ -88,6 +92,27 @@ namespace RPG.Units.Player
             }
         }
 
+        private void OnCrouch()
+        {
+            _stats.InCrouch = !_stats.InCrouch;
+            _animator.SetBool("Crouch", _stats.InCrouch);
+
+            if (_stats.InCrouch && _stats.InSprint) OnSprint();
+        }
+        
+        private void OnSprint()
+        {
+            _stats.InSprint = !_stats.InSprint;
+            _animator.SetBool("Sprint", _stats.InSprint);
+
+            if (_stats.InSprint && _stats.InCrouch) OnCrouch();
+        }
+
+        private void OnJump()
+        {
+
+        }
+
         protected override void BindingEvents(bool unbind = false)
         {
             base.BindingEvents(unbind);
@@ -97,11 +122,17 @@ namespace RPG.Units.Player
             {
                 inputs.RangeSetEventHandler -= () => OnRearms(WeaponType.SwordAndShield);
                 inputs.RangeSetEventHandler -= () => OnRearms(WeaponType.Bow);
+                inputs.SprintEventHandler -= OnSprint;
+                inputs.CrouchEventHandler -= OnCrouch;
+                //inputs.JumpEventHandler -= OnJump;
                 return;
             }
 
             inputs.RangeSetEventHandler += () => OnRearms(WeaponType.SwordAndShield);
             inputs.RangeSetEventHandler += () => OnRearms(WeaponType.Bow);
+            inputs.SprintEventHandler += OnSprint;
+            inputs.CrouchEventHandler += OnCrouch;
+            //inputs.JumpEventHandler += OnJump;
         }
 
     }

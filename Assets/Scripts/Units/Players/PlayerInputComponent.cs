@@ -11,6 +11,9 @@ namespace RPG.Units.Player
 
         public SimpleHandle MeleeSetEventHandler;
         public SimpleHandle RangeSetEventHandler;
+        public SimpleHandle SprintEventHandler;
+        public SimpleHandle CrouchEventHandler;
+        public SimpleHandle JumpEventHandler;
 
               
 
@@ -23,6 +26,10 @@ namespace RPG.Units.Player
             _controls.Unit.AdditionalAction.performed += OnAdditionalAction;
             _controls.Unit.MeleeSet.performed += OnMeleeSet;
             _controls.Unit.RangeSet.performed += OnRangeSet;
+            _controls.Unit.Crouch.performed += (q) => CallSimplerHandle(nameof(CrouchEventHandler));
+            _controls.Unit.Sprint.performed += (q) => CallSimplerHandle(nameof(SprintEventHandler));
+            _controls.Unit.Jump.performed += (q) => CallSimplerHandle(nameof(JumpEventHandler));
+
         }
                       
 
@@ -75,6 +82,9 @@ namespace RPG.Units.Player
             _controls.Unit.AdditionalAction.performed -= OnAdditionalAction;
             _controls.Unit.MeleeSet.performed -= OnMeleeSet;
             _controls.Unit.RangeSet.performed -= OnRangeSet;
+            _controls.Unit.Crouch.performed -= (q) => CallSimplerHandle(nameof(CrouchEventHandler));
+            _controls.Unit.Sprint.performed -= (q) => CallSimplerHandle(nameof(SprintEventHandler));
+            _controls.Unit.Jump.performed -= (q) => CallSimplerHandle(nameof(JumpEventHandler));
         }
                 
         private Vector3 SetMovement()

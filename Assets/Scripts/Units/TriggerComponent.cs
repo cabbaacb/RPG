@@ -11,7 +11,7 @@ namespace RPG.Units
 
         private Collider _collider;
         private Unit _unit;
-        private UnitStatsComponent _stats;
+        private UnitStateComponent _stats;
         
 
         public int GetID => _id;
@@ -21,7 +21,7 @@ namespace RPG.Units
             set => _collider.enabled = value;
         }
 
-        public void Construct(Unit unit, UnitStatsComponent stats)
+        public void Construct(Unit unit, UnitStateComponent stats)
         {
             _unit = unit;
             _stats = stats;
@@ -53,7 +53,7 @@ namespace RPG.Units
 
         private void OnTriggerEnter(Collider other)
         {
-            var unit = other.GetComponent<UnitStatsComponent>();
+            var unit = other.GetComponent<UnitStateComponent>();
             if (unit == null) return;
 
             unit.CurrentHealth -= 5f;

@@ -91,6 +91,33 @@ namespace RPG.Units.Player
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""Button"",
+                    ""id"": ""0e4410bc-d1b9-4f24-b751-617748c271e0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Sprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""9deeed5a-fa8e-4b85-b287-f2aa94b69cba"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""dd196c2b-2fb8-4a3a-9432-4bc6ef2b9b8a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -214,6 +241,39 @@ namespace RPG.Units.Player
                     ""action"": ""RangeSet"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""51646323-cfba-485c-befc-607ca8c5920c"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bf9b0b0d-feba-4b68-b3d0-d0ad31bda3ac"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e585503-1b9d-41f7-b176-8a062b7fa05e"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -257,6 +317,9 @@ namespace RPG.Units.Player
             m_Unit_LockTarget = m_Unit.FindAction("LockTarget", throwIfNotFound: true);
             m_Unit_MeleeSet = m_Unit.FindAction("MeleeSet", throwIfNotFound: true);
             m_Unit_RangeSet = m_Unit.FindAction("RangeSet", throwIfNotFound: true);
+            m_Unit_Crouch = m_Unit.FindAction("Crouch", throwIfNotFound: true);
+            m_Unit_Sprint = m_Unit.FindAction("Sprint", throwIfNotFound: true);
+            m_Unit_Jump = m_Unit.FindAction("Jump", throwIfNotFound: true);
             // Camera
             m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
             m_Camera_Delta = m_Camera.FindAction("Delta", throwIfNotFound: true);
@@ -326,6 +389,9 @@ namespace RPG.Units.Player
         private readonly InputAction m_Unit_LockTarget;
         private readonly InputAction m_Unit_MeleeSet;
         private readonly InputAction m_Unit_RangeSet;
+        private readonly InputAction m_Unit_Crouch;
+        private readonly InputAction m_Unit_Sprint;
+        private readonly InputAction m_Unit_Jump;
         public struct UnitActions
         {
             private @PlayerControls m_Wrapper;
@@ -337,6 +403,9 @@ namespace RPG.Units.Player
             public InputAction @LockTarget => m_Wrapper.m_Unit_LockTarget;
             public InputAction @MeleeSet => m_Wrapper.m_Unit_MeleeSet;
             public InputAction @RangeSet => m_Wrapper.m_Unit_RangeSet;
+            public InputAction @Crouch => m_Wrapper.m_Unit_Crouch;
+            public InputAction @Sprint => m_Wrapper.m_Unit_Sprint;
+            public InputAction @Jump => m_Wrapper.m_Unit_Jump;
             public InputActionMap Get() { return m_Wrapper.m_Unit; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -367,6 +436,15 @@ namespace RPG.Units.Player
                     @RangeSet.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnRangeSet;
                     @RangeSet.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnRangeSet;
                     @RangeSet.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnRangeSet;
+                    @Crouch.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnCrouch;
+                    @Crouch.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnCrouch;
+                    @Crouch.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnCrouch;
+                    @Sprint.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnSprint;
+                    @Sprint.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnSprint;
+                    @Sprint.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnSprint;
+                    @Jump.started -= m_Wrapper.m_UnitActionsCallbackInterface.OnJump;
+                    @Jump.performed -= m_Wrapper.m_UnitActionsCallbackInterface.OnJump;
+                    @Jump.canceled -= m_Wrapper.m_UnitActionsCallbackInterface.OnJump;
                 }
                 m_Wrapper.m_UnitActionsCallbackInterface = instance;
                 if (instance != null)
@@ -392,6 +470,15 @@ namespace RPG.Units.Player
                     @RangeSet.started += instance.OnRangeSet;
                     @RangeSet.performed += instance.OnRangeSet;
                     @RangeSet.canceled += instance.OnRangeSet;
+                    @Crouch.started += instance.OnCrouch;
+                    @Crouch.performed += instance.OnCrouch;
+                    @Crouch.canceled += instance.OnCrouch;
+                    @Sprint.started += instance.OnSprint;
+                    @Sprint.performed += instance.OnSprint;
+                    @Sprint.canceled += instance.OnSprint;
+                    @Jump.started += instance.OnJump;
+                    @Jump.performed += instance.OnJump;
+                    @Jump.canceled += instance.OnJump;
                 }
             }
         }
@@ -438,6 +525,9 @@ namespace RPG.Units.Player
             void OnLockTarget(InputAction.CallbackContext context);
             void OnMeleeSet(InputAction.CallbackContext context);
             void OnRangeSet(InputAction.CallbackContext context);
+            void OnCrouch(InputAction.CallbackContext context);
+            void OnSprint(InputAction.CallbackContext context);
+            void OnJump(InputAction.CallbackContext context);
         }
         public interface ICameraActions
         {

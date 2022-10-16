@@ -2154,6 +2154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _components:
   - {fileID: 870069527}
+  - {fileID: 870069530}
   _identifier: 
   _useSceneContext: 0
   _context: {fileID: 870069529}
@@ -4228,7 +4229,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2007ebf05df89da4286e61338505e61d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 3
+  _moveSpeed: 3
+  _sprintSpeed: 6
   MaxHealth: 10
   SideType: 1
   Name: FriendUnit
@@ -8102,7 +8104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2007ebf05df89da4286e61338505e61d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 3
+  _moveSpeed: 3
+  _sprintSpeed: 6
   MaxHealth: 10
   SideType: 1
   Name: 
@@ -10810,7 +10813,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2007ebf05df89da4286e61338505e61d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 3
+  _moveSpeed: 3
+  _sprintSpeed: 6
   MaxHealth: 10
   SideType: 1
   Name: 
@@ -10877,7 +10881,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weapons:
-  - Type: 1
+  - Type: 0
     Object: {fileID: 164362894}
   - Type: 1
     Object: {fileID: 1776783278}
@@ -12352,7 +12356,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2007ebf05df89da4286e61338505e61d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 3
+  _moveSpeed: 3
+  _sprintSpeed: 6
   MaxHealth: 10
   SideType: 2
   Name: Enemy1
