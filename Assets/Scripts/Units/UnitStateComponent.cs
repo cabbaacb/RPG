@@ -23,6 +23,7 @@ namespace RPG.Units
         public float GetMoveSpeed => InSprint ? _sprintSpeed : _moveSpeed;
         public bool InCrouch { get; set; }
         public bool InSprint { get; set; }
+        public bool InAir { get; set; } = true;
         //private List<(string, float)> _calldown = new List<(string, float)>();
 
         private void Start()

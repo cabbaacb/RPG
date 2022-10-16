@@ -6,7 +6,7 @@ namespace RPG.Units
 {
     public class BaseTriggerComponent : MonoBehaviour
     {
-        private SimpleHandle<Collider, bool> OnTriggerCollisionEventHandler;
+        public SimpleHandle<Collider, bool> OnTriggerCollisionEventHandler;
         private Collider _collider;
 
         public bool Enable

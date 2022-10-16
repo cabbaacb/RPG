@@ -15,20 +15,21 @@ namespace RPG.Units
         protected float _sqrtFindTargetDistance = 500f;
 
         
-        private bool _inAnimation;
         private TriggerComponent[] _colliders;
 
         [Inject]
         protected UnitManager _unitManager;
-        protected UnitStateComponent _stats;
+        protected UnitStateComponent _state;
         protected UnitInputComponent _inputs;
         protected Animator _animator;
+        protected bool _inAnimation;
+        protected UnitSpaceComponent _space;
 
         public SimpleHandle OnTargetLostHandler;
         
         public Unit Target { get; protected set; }
         public Transform GetTargetPoint => _targetPoint;
-        public UnitStateComponent GetStats => _stats;
+        public UnitStateComponent GetStats => _state;
 
 
         // Start is called before the first frame update
@@ -36,11 +37,12 @@ namespace RPG.Units
         {
             _animator = this.FindComponent<Animator>();
             _inputs = this.FindComponent<UnitInputComponent>();
-            _stats = this.FindComponent<UnitStateComponent>();
+            _state = this.FindComponent<UnitStateComponent>();
+            _space = this.FindComponent<UnitSpaceComponent>();
 
             _colliders = this.FindComponentsInChildren<TriggerComponent>();
             foreach (var collider in _colliders)
-                collider.Construct(this, _stats);
+                collider.Construct(this, _state);
 #if UNITY_EDITOR
             if (_inputs == null)
             {
@@ -70,6 +72,11 @@ namespace RPG.Units
             //OnRotate();
         }
 
+        protected void OnFalling(bool isFalling)
+        {
+            Debug.Log("Fall: " + isFalling);
+        }
+
         protected abstract void FindNewTarget();
 
         protected virtual void BindingEvents(bool unbind = false)
@@ -79,12 +86,14 @@ namespace RPG.Units
                 _inputs.MainAttackEventHandler -= OnMainAction;
                 _inputs.AdditionalAttackEventHandler -= OnAdditionalAction;
                 _inputs.TargetEventHandler -= OnTargetUpdate;
+                _space.OnFallingEvent -= OnFalling;
                 return;
             }
 
             _inputs.MainAttackEventHandler += OnMainAction;
             _inputs.AdditionalAttackEventHandler += OnAdditionalAction;
             _inputs.TargetEventHandler += OnTargetUpdate;
+            _space.OnFallingEvent += OnFalling;
         }
 
         private void OnMainAction()
@@ -97,12 +106,12 @@ namespace RPG.Units
 
         private void OnAdditionalAction()
         {
-            if (_inAnimation || _stats.CurrentCalldown > 0f) return;
+            if (_inAnimation || _state.CurrentCalldown > 0f) return;
 
             _animator.SetTrigger("AdditionalAction");
             _inAnimation = true;
 
-            _stats.CurrentCalldown = _stats.CalldownShieldAttack;
+            _state.CurrentCalldown = _state.CalldownShieldAttack;
         }
 
         private void OnTargetUpdate()
@@ -134,7 +143,7 @@ namespace RPG.Units
             else
             {
                 _animator.SetBool("Moving", true);
-                transform.position += transform.TransformVector(movement) * _stats.GetMoveSpeed * Time.deltaTime;
+                transform.position += transform.TransformVector(movement) * _state.GetMoveSpeed * Time.deltaTime;
             }
 
         }

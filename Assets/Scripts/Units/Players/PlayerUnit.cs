@@ -55,7 +55,7 @@ namespace RPG.Units.Player
             }
 
 
-            if ((movement.z <= 0f || movement.x != 0f) && _stats.InSprint)
+            if ((movement.z <= 0f || movement.x != 0f) && _state.InSprint)
                 OnSprint();
 
         }
@@ -94,22 +94,24 @@ namespace RPG.Units.Player
 
         private void OnCrouch()
         {
-            _stats.InCrouch = !_stats.InCrouch;
-            _animator.SetBool("Crouch", _stats.InCrouch);
+            _state.InCrouch = !_state.InCrouch;
+            _animator.SetBool("Crouch", _state.InCrouch);
 
-            if (_stats.InCrouch && _stats.InSprint) OnSprint();
+            if (_state.InCrouch && _state.InSprint) OnSprint();
         }
         
         private void OnSprint()
         {
-            _stats.InSprint = !_stats.InSprint;
-            _animator.SetBool("Sprint", _stats.InSprint);
+            _state.InSprint = !_state.InSprint;
+            _animator.SetBool("Sprint", _state.InSprint);
 
-            if (_stats.InSprint && _stats.InCrouch) OnCrouch();
+            if (_state.InSprint && _state.InCrouch) OnCrouch();
         }
 
         private void OnJump()
         {
+            _inAnimation = true;
+            //_animator.SetBool
 
         }
 
@@ -124,7 +126,7 @@ namespace RPG.Units.Player
                 inputs.RangeSetEventHandler -= () => OnRearms(WeaponType.Bow);
                 inputs.SprintEventHandler -= OnSprint;
                 inputs.CrouchEventHandler -= OnCrouch;
-                //inputs.JumpEventHandler -= OnJump;
+                inputs.JumpEventHandler -= OnJump;
                 return;
             }
 
@@ -132,7 +134,7 @@ namespace RPG.Units.Player
             inputs.RangeSetEventHandler += () => OnRearms(WeaponType.Bow);
             inputs.SprintEventHandler += OnSprint;
             inputs.CrouchEventHandler += OnCrouch;
-            //inputs.JumpEventHandler += OnJump;
+            inputs.JumpEventHandler += OnJump;
         }
 
     }

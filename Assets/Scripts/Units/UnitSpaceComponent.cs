@@ -9,12 +9,51 @@ namespace RPG.Units
     {
         [SerializeField, ReadOnly]
         private BaseTriggerComponent _trigger;
+        [SerializeField, Range(0.1f, 2f)]
+        private float _fallDelayStart = 0.5f;
+
+        private LinkedList<GameObject> _obstacles = new LinkedList<GameObject>();
+        private UnitStateComponent _state;
+        private Coroutine _fallingCor;
+
+        public event SimpleHandle<bool> OnFallingEvent;
 
         private void Start()
         {
-            
+            _state = this.FindComponent<UnitStateComponent>();
+            _trigger.OnTriggerCollisionEventHandler += UpdateAir;
         }
 
+        private void UpdateAir(Collider collider, bool enter)
+        {
+            if (!collider.CompareTag(Constants.FloorTag)) return;
+            if (enter) _obstacles.AddLast(collider.gameObject);
+            else _obstacles.Remove(collider.gameObject);
+
+            _state.InAir = _obstacles.Count == 0;
+
+            if (_state.InAir)
+                _fallingCor = StartCoroutine(Falling());
+            else
+            {
+                if (_fallingCor != null)
+                {
+                    StopCoroutine(_fallingCor);
+                    _fallingCor = null;
+                }
+                OnFallingEvent?.Invoke(false);
+            }
+        }
+        private IEnumerator Falling()
+        {
+            yield return new WaitForSeconds(_fallDelayStart);
+            if (_state.InAir)
+                OnFallingEvent?.Invoke(true);
+            _fallingCor = null;
+        }
+
+
+        #region Editor
 #if UNITY_EDITOR
         [ContextMenu("Create or Find collider")]
         private void Construct()
@@ -51,6 +90,12 @@ namespace RPG.Units
             UnityEditor.SceneManagement.EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
         }
 #endif
+        #endregion
+
+        private void OnDestroy()
+        {
+            _trigger.OnTriggerCollisionEventHandler -= UpdateAir;
+        }
 
     }
 }
